@@ -7,12 +7,12 @@ def main():
     while True:
         display_menu(["Create PCAP", "Create PCAP from Template", "Exit"], title="Welcome to PCAPer!")
         new_line()
-        selection = menu_selector("select")
+        selection = menu_selector("<")
         new_line()
 
         match selection:
             case 1:
-                print("Create PCAP")
+                create_pcap_prompt()
             case 2:
                print("Create PCAP from template")
             case 3:
@@ -28,7 +28,9 @@ def create_pcap_prompt():
     '''
     Prompter for handling creating a new pcap file
     '''
-    menu_selector(["UDP, TCP", "ICMP", "IGMP", "ARP Request", "ARP Respone"], )
+    display_menu(["UDP", "TCP", "ICMP", "IGMP", "ARP Request", "ARP Respone"], title="Select a protocol")
+    new_line()
+    selection = menu_selector("<")
 
 if __name__ == "__main__":
     typer.run(main)
