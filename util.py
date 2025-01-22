@@ -1,7 +1,7 @@
 import typer
 
 
-clear = lambda: print("\n"*10)
+clear = lambda: print("\n"*5)
 new_line = lambda: print("\n")
 
 def display_menu(options: list[str], title:str=""):

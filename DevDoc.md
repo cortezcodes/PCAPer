@@ -18,6 +18,9 @@ PCAPer is a Command line tool used to create PCAP files from templates. PCAP tem
 5. PCAPer must be able to all CRUD functions on folders
 6. PCAPer must be able to do all CRUD functions on PCAP template
 7. PCAPer must be able to import pcap files to be used at templates. 
+8. PCAPer should be able to send PCAP directly
+9. PCAPer should be able to scp PCAP files between vms. 
+10. PCAPer must be able to set default file saving location
 
 ## User Interface
 [Source IP | Source MAC | Dest IP | Dest MAC | Protocol]
