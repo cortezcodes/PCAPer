@@ -26,3 +26,50 @@ PCAPer is a Command line tool used to create PCAP files from templates. PCAP tem
 [Source IP | Source MAC | Dest IP | Dest MAC | Protocol]
 - Create PCAP
 - Create PCAP Template
+
+## Database Classes
+Packet 
+- id
+- Created Date
+- Modified Date
+- data -  example
+```JSON
+{
+  "Ethernet": {
+    "src": "00:11:22:33:44:55",
+    "dst": "66:77:88:99:AA:BB",
+    "type": 2048
+  },
+  "IP": {
+    "src": "192.168.1.10",
+    "dst": "192.168.1.20",
+    "version": 4,
+    "ihl": 5,
+    "tos": 0,
+    "len": 0,
+    "id": 1,
+    "flags": 0,
+    "frag": 0,
+    "ttl": 64,
+    "proto": 17  // UDP protocol number
+  },
+  "UDP": {
+    "sport": 12345,
+    "dport": 80,
+    "len": 0,
+    "chksum": null
+  },
+  "ARP": {
+    "hwtype": 1,
+    "ptype": 2048,
+    "hwlen": 6,
+    "plen": 4,
+    "op": 1,
+    "hwsrc": "00:11:22:33:44:55",
+    "psrc": "192.168.1.10",
+    "hwdst": "66:77:88:99:AA:BB",
+    "pdst": "192.168.1.20"
+  },
+  "Payload": "Hello, this is a test payload!"
+}
+```

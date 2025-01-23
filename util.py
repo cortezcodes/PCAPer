@@ -1,8 +1,11 @@
 import typer
+from rich.console import Console
+import os
 
-
-clear = lambda: print("\n"*5)
+console = Console()
+clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 new_line = lambda: print("\n")
+
 
 def display_menu(options: list[str], title:str=""):
     '''
@@ -11,10 +14,10 @@ def display_menu(options: list[str], title:str=""):
     title: str (optional) - creates a title for the terminal menu\n
     '''
     if title != "":
-        print(title)
+        console.print(title)
 
     for option in options:
-        print(f"{options.index(option)+1}) {option}")
+        console.print(f"[blue]{options.index(option)+1})[/blue] {option}")
 
 def menu_selector(question: str):
     '''
@@ -28,3 +31,14 @@ def menu_selector(question: str):
         print("[red]ERROR:[/red] Invalid input.")
         new_line()
         return -1
+    
+def ensure_filepath(file_path: str):
+    '''
+    Ensures a given filepath exists. If any directory within the filepath does not exist, than it creates it. 
+    '''
+    # Get the directory name from the file path
+    directory = os.path.dirname(file_path)
+    
+    # Create the directories if they don't exist
+    if directory and not os.path.exists(directory):
+        os.makedirs(directory)
