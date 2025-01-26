@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.table import Table
 from db_controller import create_packet_template, get_templates
 from models import PacketTemplate
-from pcap_generator import udp_generator
+from pcap_generator import tcp_generator, udp_generator
 from util import display_menu, menu_selector, clear, new_line
 
 console = Console()
@@ -15,7 +15,7 @@ console = Console()
 def main(): 
     clear()
     while True:
-        display_menu(["Create PCAP", "Create PCAP from Template","Create PCAP from File", "Exit"], title="Welcome to PCAPer!")
+        display_menu(["Create PCAP", "Create PCAP from Template","Create PCAP from File", "Manage Templates","Exit"], title="Welcome to PCAPer!")
         new_line()
         selection = menu_selector("<")
         new_line()
@@ -27,8 +27,10 @@ def main():
             case 2:
                create_pcap_from_template_prompt()
             case 3:
-                print("Create PCAP from File")
+                print("Create PCAP from File - coming soon")
             case 4:
+                print("Manage Templates - Coming soon")
+            case 5:
                 clear()
                 print("Goodbye")
                 break
@@ -112,10 +114,8 @@ def udp_templates_prompt():
                   payload=template.data["payload"],
                   output_file=filepath)
 
-    #TODO Create menu for selecting a template to make a pcap from template
-
-
-    
+    clear()
+  
 def create_pcap_prompt():
     '''
     Prompter for handling creating a new pcap file
@@ -127,12 +127,67 @@ def create_pcap_prompt():
         match selection:
             case 1:
                 create_udp_prompt()
+            case 2:
+                create_tcp_prompt()
             case 7:
                 clear()
                 break
             case _:
                 clear()
                 console.print("[red]Invalid:[/red] Bad input, please try again.\n")
+
+def create_tcp_prompt():
+    '''
+    Prompter for handling gathering parameters to build a TCP
+    '''
+    clear()
+    confirmed = False
+        
+    while not confirmed:
+        console.print("[green]TCP Packet Configuration[/green]")
+        src_mac = typer.prompt("Source Mac", default="00:11:22:33:44:55")
+        src_ip = typer.prompt("Source IP", default="1.1.1.1")
+        src_port = typer.prompt("Source Port", default=12345)
+        flag = typer.prompt("TCP Flage (S = SYN or A = ACK)", default="")
+        dst_mac = typer. prompt("Destination Mac", default="66:77:88:99:AA:BB")
+        dst_ip = typer.prompt("Destination IP", default="2.2.2.2")
+        dst_port = typer.prompt("Destination Port", default=80)
+        payload = typer.prompt("Payload", default="")
+        filepath = typer.prompt("PCAP filepath", default="./pcap_files/tcp_output.pcap")
+        clear()
+        console.print(f"Src IP: {src_ip}\nSrc Port: {src_port}\nDest IP: {dst_ip}\n" +
+                                  f"Dest Port: {dst_port}\nFlag: {flag}\nPayload: [green]{payload}[/green]\nFilepath: {filepath}\n\n")
+        confirmed = typer.confirm("Confirm")
+        
+        if not confirmed:
+            exit = typer.confirm("Would you like to go back to the main menu?")
+            if exit:
+                clear()
+                return
+            clear()
+        
+    make_template: bool = typer.confirm("Would you like to make this packet into a template?")    
+
+    output_file = tcp_generator(src_mac=src_mac, dest_mac=dst_mac,src_ip=src_ip, 
+                                src_port=src_port, dest_ip=dst_ip, dest_port=dst_port, 
+                                flag=flag, payload=payload, output_file=filepath)
+    if output_file:
+        clear()
+        console.print(f"pcap file created at {output_file}")
+    
+    if make_template:
+            data = {"smac":src_mac,
+                    "sip":src_ip,
+                    "sport":src_port,
+                    "dmac":dst_mac,
+                    "dip":dst_ip,
+                    "dport": dst_port,
+                    "payload": payload,
+                    "flag": flag
+                    }
+            create_packet_template_prompter(type="tcp", data=data)
+            console.print("[green]Template created.[/green]")
+
 
 def create_udp_prompt():
     '''
