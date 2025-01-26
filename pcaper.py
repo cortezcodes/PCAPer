@@ -50,6 +50,7 @@ def create_pcap_from_template_prompt():
         match selection:
             case 1:
                 udp_templates_prompt()
+                break
             case 7:
                 clear()
                 break
@@ -61,6 +62,7 @@ def udp_templates_prompt():
     '''
     Displays the udp template table and provides prompts for creation
     '''
+    clear()
     table =Table(title="UDP Templates")
     table.add_column("#", justify="center")
     table.add_column("Type", justify="center")
@@ -87,6 +89,28 @@ def udp_templates_prompt():
         temp_num += 1
 
     console.print(table)
+    template_selected: bool = False
+    while not template_selected:
+        selection = typer.prompt("Select a template by # or -1 to go back")
+        if int(selection) == -1:
+            clear()
+            return
+        try:
+            template = udp_templates[int(selection)-1]
+            template_selected = True
+        except Exception as e:
+            print("Invalid selection, please try again.")
+            template_selected = False
+
+    filepath = typer.prompt("PCAP filename", default="./pcap_files/udp_output.pcap")
+    udp_generator(src_mac=template.data["smac"],
+                  src_ip=template.data["sip"],
+                  src_port=template.data["sport"],
+                  dest_mac=template.data["dmac"],
+                  dest_ip=template.data["dip"],
+                  dest_port=template.data["dport"],
+                  payload=template.data["payload"],
+                  output_file=filepath)
 
     #TODO Create menu for selecting a template to make a pcap from template
 
@@ -126,7 +150,7 @@ def create_udp_prompt():
         dst_ip = typer.prompt("Destination IP", default="2.2.2.2")
         dst_port = typer.prompt("Destination Port", default=80)
         payload = typer.prompt("Payload", default="Have you ever...dreamed?")
-        filepath = typer.prompt("PCAP filename", default="./pcap_files/udp_output.pcap")
+        filepath = typer.prompt("PCAP filepath", default="./pcap_files/udp_output.pcap")
         clear()
         console.print(f"Src IP: {src_ip}\nSrc Port: {src_port}\nDest IP: {dst_ip}\n" +
                                   f"Dest Port: {dst_port}\nPayload: [green]{payload}[/green]\nFilepath: {filepath}\n\n")

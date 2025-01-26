@@ -3,7 +3,7 @@ from scapy.all import Raw, wrpcap
 from scapy.layers.l2 import Ether
 from util import clear, ensure_filepath
 
-def udp_generator(src_mac: str, dest_mac: str, src_ip: str, src_port: int, dest_ip: str, dest_port: int, payload: str, output_file: str):
+def udp_generator(src_mac: str,  src_ip: str, src_port: int, dest_mac: str, dest_ip: str, dest_port: int, payload: str, output_file: str):
     '''
     Function for generating pcap files using scapy
     Returns the name of the output file if successful
