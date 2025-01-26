@@ -26,10 +26,17 @@ PCAPer is a Command line tool used to create PCAP files from templates. PCAP tem
 [Source IP | Source MAC | Dest IP | Dest MAC | Protocol]
 - Create PCAP
 - Create PCAP Template
+- Settings
+    - Manage Save Locations
+    - Manage scp hosts
+- Exit
 
 ## Database Classes
 Packet 
 - id
+- Type
+- Name
+- Description
 - Created Date
 - Modified Date
 - data -  example
