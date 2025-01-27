@@ -13,3 +13,6 @@ class PacketTemplate(Base):
     date_created = Column(DateTime, default=func.now(), nullable=False)
     last_modified = Column(DateTime, default=func.now(), nullable=False)
     data = Column(JSON, nullable=False)
+
+    def __repr__(self):
+        return f"<PacketTemplate(type='{self.type}', data='{self.data}')>"

@@ -1,5 +1,6 @@
 import typer
 from rich.console import Console
+from rich.table import Table
 import os
 
 console = Console()
@@ -42,3 +43,40 @@ def ensure_filepath(file_path: str):
     # Create the directories if they don't exist
     if directory and not os.path.exists(directory):
         os.makedirs(directory)
+
+def create_table(type: str,title:str, columns:list, templates:list):
+    '''
+    Generic table generator based on the type of protocol template being displayed
+    '''
+    table = Table(title=title)
+    for column in columns:
+        table.add_column(column, justify="center")
+
+    temp_num: int = 1
+    for template in templates:
+        if type == "udp":
+            table.add_row(str(temp_num),
+                        template.type, 
+                        template.data["smac"],
+                        template.data["sip"],
+                        str(template.data["sport"]),
+                        template.data["dmac"],
+                        template.data["dip"],
+                        str(template.data["dport"]),
+                        str(template.data["length"]),
+                        str(template.data["checksum"]),
+                        template.data["payload"])
+        elif type == "tcp":
+            table.add_row(str(temp_num),
+                        template.type, 
+                        template.data["smac"],
+                        template.data["sip"],
+                        str(template.data["sport"]),
+                        template.data["dmac"],
+                        template.data["dip"],
+                        str(template.data["dport"]),
+                        template.data["flag"],
+                        template.data["payload"])
+        temp_num += 1
+    
+    return table

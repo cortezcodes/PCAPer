@@ -6,8 +6,8 @@ PCAPer is a Command line tool used to create PCAP files from templates. PCAP tem
 
 ## Requirements
 1. PCAPer must be able to generate the major type of PCAP files:
-    - UDP
-    - TCP
+    - UDP --COMPLETE--
+    - TCP --COMPLETE--
     - ICMP
     - IGMP
     - ARP Request
@@ -21,6 +21,7 @@ PCAPer is a Command line tool used to create PCAP files from templates. PCAP tem
 8. PCAPer should be able to send PCAP directly
 9. PCAPer should be able to scp PCAP files between vms. 
 10. PCAPer must be able to set default file saving location
+11. Create Classes for all protocol types
 
 ## User Interface
 [Source IP | Source MAC | Dest IP | Dest MAC | Protocol]

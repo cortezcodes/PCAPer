@@ -5,6 +5,7 @@ from db import init_db
 from sqlalchemy.orm import Session
 
 from models import PacketTemplate
+from protocols import UDPPacket
 
 console = Console()
 
@@ -17,12 +18,12 @@ def startConnection():
     # Create a database session
     return sessionLocal()
 
-def create_packet_template(type: str, name: str, data: json ,description: str=""):
+def create_packet_template(packet:UDPPacket):
     '''
     Creates a packet template
     '''
     session = startConnection()
-    new_packet_template = PacketTemplate(type=type, name=name, data=data, description=description)
+    new_packet_template = PacketTemplate(type=packet.type, name=packet.name, data=packet.get_dict(), description=packet.description)
     try:
         session.add(new_packet_template)
         session.commit()

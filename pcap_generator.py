@@ -3,19 +3,6 @@ from scapy.all import Raw, wrpcap
 from scapy.layers.l2 import Ether
 from util import clear, ensure_filepath
 
-def udp_generator(src_mac: str,  src_ip: str, src_port: int, dest_mac: str, dest_ip: str, dest_port: int, payload: str, output_file: str):
-    '''
-    Function for generating pcap files using scapy
-    Returns the name of the output file if successful
-    '''
-    mac_layer = datalink_layer(src_mac=src_mac, dest_mac=dest_mac)
-    ip_layer = network_layer(src_ip=src_ip, dest_ip=dest_ip)
-    udp_layer = transport_layer(type="udp", src_port=src_port, dest_port=dest_port)
-    packet = mac_layer / ip_layer / udp_layer / Raw(load=payload)
-    ensure_filepath(file_path=output_file)
-    wrpcap(output_file, packet)
-    return  output_file
-
 def tcp_generator(src_mac: str,  src_ip: str, src_port: int, dest_mac: str, dest_ip: str, dest_port: int, flag: str, payload: str, output_file: str):
     '''
     Function for generating tcp pcap files using scapy
