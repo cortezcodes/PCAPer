@@ -55,6 +55,13 @@ class UDPPacket:
                   checksum=template.data["checksum"],
                   payload=template.data["payload"])
 
+    @classmethod
+    def get_parameters_list(cls):
+        '''
+        class a list of strings of all the parameters within this class. Used for when creating tables 
+        '''
+        # TODO Start here
+
     def generate_packet(self, filepath: str):
         '''
         Given a filepath, generate UDP packet
