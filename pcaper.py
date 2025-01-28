@@ -8,6 +8,7 @@ from rich.table import Table
 from db_controller import create_packet_template, get_templates
 from models import PacketTemplate
 from pcap_generator import tcp_generator
+from protocols.TCPPacket import TCPPacket
 from protocols.UDPPacket import UDPPacket
 from util import create_table, display_menu, menu_selector, clear, new_line
 
@@ -112,7 +113,7 @@ def tcp_templates_prompt():
     '''
     clear()
     title="TCP Templates"
-    columns = ["#","Type","Source MAC","Source IP","Source Port", "Destination MAC", "Destination IP", "Destination Port","Flag", "Payload"]
+    columns = ["#","Type","Source MAC","Source IP","Source Port", "Destination MAC", "Destination IP", "Destination Port","Flags","Sequence #","Ack #", "Payload"]
 
 
     tcp_templates: List[PacketTemplate] = get_templates("tcp")
@@ -180,15 +181,19 @@ def create_tcp_prompt():
         src_mac = typer.prompt("Source Mac", default="00:11:22:33:44:55")
         src_ip = typer.prompt("Source IP", default="1.1.1.1")
         src_port = typer.prompt("Source Port", default=12345)
-        flag = typer.prompt("TCP Flage (S = SYN or A = ACK)", default="")
+        flags = typer.prompt("TCP Flags (S = SYN, A = ACK, F = FIN, R = RST)", default="S")
         dst_mac = typer. prompt("Destination Mac", default="66:77:88:99:AA:BB")
         dst_ip = typer.prompt("Destination IP", default="2.2.2.2")
         dst_port = typer.prompt("Destination Port", default=80)
+        seq = typer.prompt("Sequence number", default=0)
+        ack = typer.prompt("Acknowledgement number", default=0)
         payload = typer.prompt("Payload", default="")
         filepath = typer.prompt("PCAP filepath", default="./pcap_files/tcp_output.pcap")
         clear()
-        console.print(f"Src IP: {src_ip}\nSrc Port: {src_port}\nDest IP: {dst_ip}\n" +
-                                  f"Dest Port: {dst_port}\nFlag: {flag}\nPayload: [green]{payload}[/green]\nFilepath: {filepath}\n\n")
+        tcp_packet = TCPPacket(src_ip=src_ip, src_mac=src_mac, src_port=src_port,
+                               dst_ip=dst_ip, dst_mac=dst_mac, dst_port=dst_port, seq=seq, 
+                               ack=ack, flags=flags, payload=payload)
+        console.print(str(tcp_packet)+ f"\nFilepath: {filepath}\n\n")
         confirmed = typer.confirm("Confirm")
         
         if not confirmed:
@@ -200,25 +205,12 @@ def create_tcp_prompt():
         
     make_template: bool = typer.confirm("Would you like to make this packet into a template?")    
 
-    output_file = tcp_generator(src_mac=src_mac, dest_mac=dst_mac,src_ip=src_ip, 
-                                src_port=src_port, dest_ip=dst_ip, dest_port=dst_port, 
-                                flag=flag, payload=payload, output_file=filepath)
-    if output_file:
-        clear()
-        console.print(f"pcap file created at {output_file}")
+    tcp_packet.generate_packet(filepath=filepath)
+    clear()
+    console.print(f"[green]PCAP file created[/green]")
     
     if make_template:
-            data = {"smac":src_mac,
-                    "sip":src_ip,
-                    "sport":src_port,
-                    "dmac":dst_mac,
-                    "dip":dst_ip,
-                    "dport": dst_port,
-                    "flag": flag,
-                    "payload": payload,
-                    }
-            create_packet_template_prompter(type="tcp", data=data)
-            console.print("[green]Template created.[/green]")
+        create_packet_template_prompter(tcp_packet)
 
 def create_udp_prompt():
     '''
@@ -264,7 +256,7 @@ def create_udp_prompt():
     if make_template:
         create_packet_template_prompter(udp_packet)
 
-def create_packet_template_prompter(packet: UDPPacket):
+def create_packet_template_prompter(packet: UDPPacket | TCPPacket):
     '''
     Provides the prompts for creating a packet template
     '''
@@ -278,7 +270,6 @@ def create_packet_template_prompter(packet: UDPPacket):
         if isCreated:
             clear()
             console.print("[green]PCAP template created successfully[/green]") 
-
 
 if __name__ == "__main__":
     typer.run(main)

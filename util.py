@@ -75,7 +75,9 @@ def create_table(type: str,title:str, columns:list, templates:list):
                         template.data["dmac"],
                         template.data["dip"],
                         str(template.data["dport"]),
-                        template.data["flag"],
+                        template.data["flags"],
+                        str(template.data["seq"]),
+                        str(template.data["ack"]),
                         template.data["payload"])
         temp_num += 1
     
