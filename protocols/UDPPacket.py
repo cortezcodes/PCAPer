@@ -1,6 +1,7 @@
 from scapy.layers.inet import UDP, IP, TCP
 from scapy.all import Raw, wrpcap
 from scapy.layers.l2 import Ether
+from models import PacketTemplate
 from util import ensure_filepath
 
 class UDPPacket:
@@ -41,6 +42,18 @@ class UDPPacket:
         self.checksum:int = checksum
         self.name:str = name
         self.description = description
+    
+    @classmethod
+    def from_template(cls, template:PacketTemplate):
+        return cls(src_mac=template.data["smac"],
+                  src_ip=template.data["sip"],
+                  src_port=template.data["sport"],
+                  dst_mac=template.data["dmac"],
+                  dst_ip=template.data["dip"],
+                  dst_port=template.data["dport"],
+                  length=template.data["length"],
+                  checksum=template.data["checksum"],
+                  payload=template.data["payload"])
 
     def generate_packet(self, filepath: str):
         '''
@@ -51,7 +64,7 @@ class UDPPacket:
         udp_layer = UDP(sport=self.src_port, dport=self.dst_port)
         packet = mac_layer / ip_layer / udp_layer / Raw(load=self.payload)
         ensure_filepath(file_path=filepath)
-        wrpcap(filepath, packet)
+        wrpcap(filepath, packet)   
 
     def get_dict(self):
         '''

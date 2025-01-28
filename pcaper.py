@@ -1,13 +1,9 @@
-import json
-from sqlite3 import IntegrityError
-import time
+
 from typing import List
 import typer
 from rich.console import Console
-from rich.table import Table
 from db_controller import create_packet_template, get_templates
 from models import PacketTemplate
-from pcap_generator import tcp_generator
 from protocols.TCPPacket import TCPPacket
 from protocols.UDPPacket import UDPPacket
 from util import create_table, display_menu, menu_selector, clear, new_line
@@ -94,18 +90,10 @@ def udp_templates_prompt():
             template_selected = False
 
     filepath = typer.prompt("PCAP filename", default="./pcap_files/udp_output.pcap")
-    udp_packet = UDPPacket(src_mac=template.data["smac"],
-                  src_ip=template.data["sip"],
-                  src_port=template.data["sport"],
-                  dest_mac=template.data["dmac"],
-                  dest_ip=template.data["dip"],
-                  dest_port=template.data["dport"],
-                  length=template.data["length"],
-                  checksum=template.data["checksum"],
-                  payload=template.data["payload"])
+    udp_packet = UDPPacket.from_template(template=template)
     udp_packet.generate_packet(filepath=filepath)
-
     clear()
+    console.print("[green]PCAP generated[/green]")
 
 def tcp_templates_prompt():
     '''
@@ -135,17 +123,12 @@ def tcp_templates_prompt():
             print("Invalid selection, please try again.")
             template_selected = False
 
-    filepath = typer.prompt("PCAP filename", default="./pcap_files/udp_output.pcap")
-    udp_generator(src_mac=template.data["smac"],
-                  src_ip=template.data["sip"],
-                  src_port=template.data["sport"],
-                  dest_mac=template.data["dmac"],
-                  dest_ip=template.data["dip"],
-                  dest_port=template.data["dport"],
-                  payload=template.data["payload"],
-                  output_file=filepath)
-
+    filepath = typer.prompt("PCAP filename", default="./pcap_files/tcp_output.pcap")
+    tcp_packet = TCPPacket.from_template(template=template)
+    tcp_packet.generate_packet(filepath=filepath)
+    
     clear()
+    console.print("[green]PCAP generated[/green]")
 
 def create_pcap_prompt():
     '''

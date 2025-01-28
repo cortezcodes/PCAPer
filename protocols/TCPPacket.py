@@ -1,6 +1,7 @@
 from scapy.layers.inet import IP, TCP
 from scapy.all import Raw, wrpcap
 from scapy.layers.l2 import Ether
+from models import PacketTemplate
 from util import ensure_filepath
 
 # Switch TCPPackets over to class
@@ -49,6 +50,19 @@ class TCPPacket:
         self.checksum:int = checksum
         self.name:str = name
         self.description = description
+
+    @classmethod
+    def from_template(cls, template:PacketTemplate):
+        return cls(src_mac=template.data["smac"],
+                  src_ip=template.data["sip"],
+                  src_port=template.data["sport"],
+                  dst_mac=template.data["dmac"],
+                  dst_ip=template.data["dip"],
+                  dst_port=template.data["dport"],
+                  seq=template.data["seq"],
+                  ack=template.data["ack"],
+                  flags=template.data["flags"],
+                  payload=template.data["payload"])
 
     def generate_packet(self, filepath: str):
         '''
