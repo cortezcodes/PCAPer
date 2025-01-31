@@ -63,6 +63,15 @@ class TCPPacket:
                   ack=template.data["ack"],
                   flags=template.data["flags"],
                   payload=template.data["payload"])
+    
+    @classmethod
+    def get_parameters_list(cls):
+        '''
+        returns a list of strings of all the parameters within this class. Used for when creating tables 
+        '''
+        return ["Type","Source MAC","Source IP","Source Port", 
+                "Destination MAC", "Destination IP", "Destination Port",
+                "Flags","Sequence #","Ack #", "Payload"]
 
     def generate_packet(self, filepath: str):
         '''

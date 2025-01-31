@@ -67,8 +67,8 @@ def udp_templates_prompt():
     '''
     clear()
     title="UDP Templates"
-    columns = ["#","Type","Source MAC","Source IP","Source Port", "Destination MAC", "Destination IP", "Destination Port","Length", "Checksum", "Payload"]
-
+    columns = UDPPacket.get_parameters_list()
+    columns.insert(0, "#")
 
     udp_templates: List[PacketTemplate] = get_templates("udp")
     table = create_table(type="udp", title=title, columns=columns, templates=udp_templates)
@@ -101,7 +101,8 @@ def tcp_templates_prompt():
     '''
     clear()
     title="TCP Templates"
-    columns = ["#","Type","Source MAC","Source IP","Source Port", "Destination MAC", "Destination IP", "Destination Port","Flags","Sequence #","Ack #", "Payload"]
+    columns = TCPPacket.get_parameters_list()
+    columns.insert(0, "#")
 
 
     tcp_templates: List[PacketTemplate] = get_templates("tcp")

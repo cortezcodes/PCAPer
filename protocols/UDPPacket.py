@@ -58,9 +58,11 @@ class UDPPacket:
     @classmethod
     def get_parameters_list(cls):
         '''
-        class a list of strings of all the parameters within this class. Used for when creating tables 
+        returns a list of strings of all the parameters within this class. Used for when creating tables 
         '''
-        # TODO Start here
+        return ["Type", "Source MAC", "Source IP", "Source Port", 
+                "Destination MAC","Destination IP", "Destination Port",
+                "Length", "Checksum", "Payload"]
 
     def generate_packet(self, filepath: str):
         '''
