@@ -13,8 +13,6 @@ class UDPPacket:
              dst_mac: str,
              dst_port: str,
              payload: str,
-             length:int=None,
-             checksum:int=None,
              name:str="",
              description:str=""
             ):
@@ -38,8 +36,6 @@ class UDPPacket:
         self.dst_mac:str = dst_mac
         self.dst_port:int = dst_port
         self.payload:str = payload
-        self.length:int = length
-        self.checksum:int = checksum
         self.name:str = name
         self.description = description
     
@@ -51,8 +47,6 @@ class UDPPacket:
                   dst_mac=template.data["dmac"],
                   dst_ip=template.data["dip"],
                   dst_port=template.data["dport"],
-                  length=template.data["length"],
-                  checksum=template.data["checksum"],
                   payload=template.data["payload"])
 
     @classmethod
@@ -81,8 +75,8 @@ class UDPPacket:
         '''
         return {"sip": self.src_ip, "smac": self.src_mac, "sport":self.src_port,
                 "dip": self.dst_ip, "dmac":self.dst_mac, "dport":self.dst_port,
-                "payload":self.payload, "length":self.length, "checksum":self.checksum, "name":self.name,
+                "payload":self.payload,"name":self.name,
                 "description": self.description}
     
     def __repr__(self):
-        return f"Src IP: {self.src_ip}\nSrc MAC: {self.src_mac}\nSrc Port: {self.src_port}\nDest IP: {self.dst_ip}\nDest MAC: {self.dst_mac}Dest Port: {self.dst_port}\nPayload: [green]{self.payload}[/green]\nChecksum: {self.checksum}\nLength: {self.length}\n"
+        return f"Src IP: {self.src_ip}\nSrc MAC: {self.src_mac}\nSrc Port: {self.src_port}\nDest IP: {self.dst_ip}\nDest MAC: {self.dst_mac}Dest Port: {self.dst_port}\nPayload: [green]{self.payload}[/green]\n"

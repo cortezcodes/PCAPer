@@ -17,7 +17,6 @@ def main():
         new_line()
         selection = menu_selector("<")
         new_line()
-
         match selection:
             case 1:
                 clear()
@@ -212,14 +211,12 @@ def create_udp_prompt():
         dst_ip = typer.prompt("Destination IP", default="2.2.2.2")
         dst_port = typer.prompt("Destination Port", default=80)
         payload = typer.prompt("Payload", default="Have you ever...dreamed?")
-        checksum = typer.prompt("Checksum", default="")
-        length = typer.prompt("Length", default="")
         filepath = typer.prompt("PCAP filepath", default="./pcap_files/udp_output.pcap")
 
         clear()
         udp_packet:UDPPacket = UDPPacket(src_ip=src_ip, src_mac=src_mac, src_port=src_port, 
                                dst_ip=dst_ip, dst_mac=dst_mac, dst_port=dst_port,
-                               payload=payload, length=length, checksum=checksum)
+                               payload=payload)
         
         console.print(str(udp_packet)+f"\nfilepath: {filepath}\n\n")
         confirmed = typer.confirm("Confirm")
@@ -239,6 +236,46 @@ def create_udp_prompt():
     
     if make_template:
         create_packet_template_prompter(udp_packet)
+
+def create_icmp_prompt():
+    '''
+    Prompt for creating ICMP 
+    '''
+    clear()
+    confirmed = False
+        
+    while not confirmed:
+        console.print("[green]ICMP Packet Configuration[/green]")
+        src_ip = typer.prompt("Source IP", default="1.1.1.1")
+        dst_ip = typer.prompt("Destination IP", default="2.2.2.2")
+        display_menu(["0"]) #TODO Add Table of all Message types available for ICMP Protocol
+        message_type = typer.prompt("Message Type",)
+        filepath = typer.prompt("PCAP filepath", default="./pcap_files/udp_output.pcap")
+
+        clear()
+        udp_packet:UDPPacket = UDPPacket(src_ip=src_ip, src_mac=src_mac, src_port=src_port, 
+                               dst_ip=dst_ip, dst_mac=dst_mac, dst_port=dst_port,
+                               payload=payload)
+        
+        console.print(str(udp_packet)+f"\nfilepath: {filepath}\n\n")
+        confirmed = typer.confirm("Confirm")
+        
+        if not confirmed:
+            exit = typer.confirm("Would you like to go back to the main menu?")
+            if exit:
+                clear()
+                return
+            clear()
+        
+    make_template: bool = typer.confirm("Would you like to make this packet into a template?")    
+    udp_packet.generate_packet(filepath)
+
+    clear()
+    console.print(f"pcap file created")
+    
+    if make_template:
+        create_packet_template_prompter(udp_packet)
+
 
 def create_packet_template_prompter(packet: UDPPacket | TCPPacket):
     '''

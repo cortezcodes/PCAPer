@@ -63,8 +63,6 @@ def create_table(type: str,title:str, columns:list, templates:list):
                         template.data["dmac"],
                         template.data["dip"],
                         str(template.data["dport"]),
-                        str(template.data["length"]),
-                        str(template.data["checksum"]),
                         template.data["payload"])
         elif type == "tcp":
             table.add_row(str(temp_num),

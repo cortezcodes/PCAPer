@@ -17,7 +17,6 @@ class TCPPacket:
              ack: int,
              flags: str,
              payload: str,
-             checksum:int=None,
              name:str="",
              description:str=""
             ):
@@ -34,7 +33,6 @@ class TCPPacket:
         :param flags: SYN, ACK, FIN, RST flags
         :param payload: Data to include in the UDP packet
         :param length: Length of the UDP packet (header + payload)
-        :param checksum: Custom checksum for the UDP packet
         '''
         self.type:str = "tcp"
         self.src_ip:str = src_ip
@@ -47,7 +45,6 @@ class TCPPacket:
         self.ack:int = ack
         self.flags:str = flags
         self.payload:str = payload
-        self.checksum:int = checksum
         self.name:str = name
         self.description = description
 
@@ -90,8 +87,8 @@ class TCPPacket:
         '''
         return {"sip": self.src_ip, "smac": self.src_mac, "sport":self.src_port,
                 "dip": self.dst_ip, "dmac":self.dst_mac, "dport":self.dst_port,
-                "payload":self.payload, "checksum":self.checksum, "name":self.name,
+                "payload":self.payload, "name":self.name,
                 "description": self.description, "flags":self.flags,"ack":self.ack, "seq":self.seq}
     
     def __repr__(self):
-        return f"\nSrc IP: {self.src_ip}\nSrc MAC: {self.src_mac}\nSrc Port: {self.src_port}\nDest IP: {self.dst_ip}\nDest MAC: {self.dst_mac}\nDest Port: {self.dst_port}\nFlags: {self.flags}\nSequence #: {self.seq}\nAck: {self.ack}\nPayload: [green]{self.payload}[/green]\nChecksum: {self.checksum}\n"
+        return f"\nSrc IP: {self.src_ip}\nSrc MAC: {self.src_mac}\nSrc Port: {self.src_port}\nDest IP: {self.dst_ip}\nDest MAC: {self.dst_mac}\nDest Port: {self.dst_port}\nFlags: {self.flags}\nSequence #: {self.seq}\nAck: {self.ack}\nPayload: [green]{self.payload}[/green]\n"
