@@ -51,7 +51,7 @@ def create_table(type: str,title:str, columns:list, templates:list):
     table = Table(title=title)
     for column in columns:
         table.add_column(column, justify="center")
-
+    #TODO Add names and to the table entries
     temp_num: int = 1
     for template in templates:
         if type == "udp":
@@ -77,6 +77,16 @@ def create_table(type: str,title:str, columns:list, templates:list):
                         str(template.data["seq"]),
                         str(template.data["ack"]),
                         template.data["payload"])
+        elif type == "icmp":
+            table.add_row(str(temp_num),
+                        template.type,
+                        template.data["sip"],
+                        template.data["dip"],
+                        str(template.data["msg_type"]),
+                        str(template.data["code"]),
+                        str(template.data["ident"]),
+                        str(template.data["seq"]))
         temp_num += 1
+
     
     return table

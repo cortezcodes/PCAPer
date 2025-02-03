@@ -18,11 +18,7 @@ class ICMPPacket:
         '''
         Initialize the TCP packet parameters.
         :param src_ip: Source IP address
-        :param src_mac: Source MAC address
-        :param src_port: Source port
         :param dst_ip: Destination IP address
-        :param dst_mac: Destination MAC address
-        :param dst_port: Destination port
         :param  seq: Sequence number
         :param message_type: error code
         :param code: subset of the message_type
@@ -74,4 +70,4 @@ class ICMPPacket:
                 "description": self.description, "seq":self.seq, "ident":self.ident, "code":self.code}
     
     def __repr__(self):
-        return f"\nSrc IP: {self.src_ip}\nDest IP: {self.dst_ip}\nMessage Type: {self.message_type}\nCode: {self.code}\nID:{self.id}\nSequence #: {self.seq}\n\n"
+        return f"\nSrc IP: {self.src_ip}\nDest IP: {self.dst_ip}\nMessage Type: {self.message_type}\nCode: {self.code}\nIdentifier:{self.ident}\nSequence #: {self.seq}\n\n"
