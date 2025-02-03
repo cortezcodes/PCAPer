@@ -66,7 +66,7 @@ class TCPPacket:
         '''
         returns a list of strings of all the parameters within this class. Used for when creating tables 
         '''
-        return ["Type","Source MAC","Source IP","Source Port", 
+        return ["Type","Names","Source MAC","Source IP","Source Port", 
                 "Destination MAC", "Destination IP", "Destination Port",
                 "Flags","Sequence #","Ack #", "Payload"]
 

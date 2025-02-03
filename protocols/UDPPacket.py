@@ -54,9 +54,8 @@ class UDPPacket:
         '''
         returns a list of strings of all the parameters within this class. Used for when creating tables 
         '''
-        return ["Type", "Source MAC", "Source IP", "Source Port", 
-                "Destination MAC","Destination IP", "Destination Port",
-                "Length", "Checksum", "Payload"]
+        return ["Type","Name", "Source MAC", "Source IP", "Source Port", 
+                "Destination MAC","Destination IP", "Destination Port", "Payload"]
 
     def generate_packet(self, filepath: str):
         '''

@@ -56,7 +56,8 @@ def create_table(type: str,title:str, columns:list, templates:list):
     for template in templates:
         if type == "udp":
             table.add_row(str(temp_num),
-                        template.type, 
+                        template.type,
+                        template.data["name"], 
                         template.data["smac"],
                         template.data["sip"],
                         str(template.data["sport"]),
@@ -67,6 +68,7 @@ def create_table(type: str,title:str, columns:list, templates:list):
         elif type == "tcp":
             table.add_row(str(temp_num),
                         template.type, 
+                        template.data["name"],
                         template.data["smac"],
                         template.data["sip"],
                         str(template.data["sport"]),
@@ -80,6 +82,7 @@ def create_table(type: str,title:str, columns:list, templates:list):
         elif type == "icmp":
             table.add_row(str(temp_num),
                         template.type,
+                        template.data["name"],
                         template.data["sip"],
                         template.data["dip"],
                         str(template.data["msg_type"]),

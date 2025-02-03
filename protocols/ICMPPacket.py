@@ -49,8 +49,8 @@ class ICMPPacket:
         '''
         returns a list of strings of all the parameters within this class. Used for when creating tables 
         '''
-        return ["Type","Source IP", "Destination IP",
-                "Message","Code","ID","Sequence #","Checksum"]
+        return ["Type","Name", "Source IP", "Destination IP",
+                "Message","Code","ID","Sequence #"]
 
     def generate_packet(self, filepath: str):
         '''
